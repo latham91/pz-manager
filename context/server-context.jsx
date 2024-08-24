@@ -57,10 +57,29 @@ export default function ServerProvider({ children }) {
     }
   }, []);
 
+  const sendCommand = async (command) => {
+    try {
+      const response = await fetch(`/api/commands/sendCommand`, {
+        method: "POST",
+        body: JSON.stringify({ command }),
+      });
+
+      if (response.ok) {
+        return;
+      }
+
+      console.error(`Failed to send command: ${command}`, response.text());
+    } catch (error) {
+      console.error(`Failed to send command: ${command}`, error);
+    }
+  };
+
   //////////////////////////////////////////////
 
   return (
-    <ServerContext.Provider value={{ serverStatus, checkServerStatus, setServerStatus, startServer, stopServer }}>{children}</ServerContext.Provider>
+    <ServerContext.Provider value={{ serverStatus, checkServerStatus, setServerStatus, startServer, stopServer, sendCommand }}>
+      {children}
+    </ServerContext.Provider>
   );
 }
 

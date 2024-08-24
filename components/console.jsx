@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useServerContext } from "@/context/server-context";
 
 export default function Console() {
+  const { sendCommand, serverStatus } = useServerContext();
   const [consoleContent, setConsoleContent] = useState("");
   const [command, setCommand] = useState("");
   const consoleRef = useRef();
@@ -46,6 +48,7 @@ export default function Console() {
     }
 
     // Send the command to the server
+    sendCommand(command);
 
     // Clear the input
     setCommand("");
@@ -58,8 +61,8 @@ export default function Console() {
         {consoleContent}
       </pre>
       <form onSubmit={handleCommandSubmit} className="mt-2 flex items-center gap-2">
-        <Input placeholder="Enter a command..." value={command} onChange={(event) => setCommand(event.target.value)} />
-        <Button type="submit" size="sm">
+        <Input placeholder="Enter a command..." value={command} onChange={(event) => setCommand(event.target.value)} disabled={!serverStatus} />
+        <Button type="submit" size="sm" disabled={!serverStatus}>
           Send
         </Button>
       </form>
