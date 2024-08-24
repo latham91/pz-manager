@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useServerContext } from "@/context/server-context";
+import { useServerContext } from "../context/server-context";
 
 export default function Console() {
   const { sendCommand, serverStatus } = useServerContext();

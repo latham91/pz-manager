@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 import Container from "./container";
 import { Button } from "./ui/button";
 
-import { useServerContext } from "@/context/server-context";
+import { useServerContext } from "../context/server-context";
 
 export default function Navbar() {
   const { serverStatus, checkServerStatus, startServer, stopServer } = useServerContext();

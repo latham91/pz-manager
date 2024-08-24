@@ -1,6 +1,6 @@
-import Console from "@/components/console";
-import Container from "@/components/container";
-import PlayerList from "@/components/player-list";
+import Container from "../components/container";
+import Console from "../components/console";
+import PlayerList from "../components/player-list";
 
 export default function Dashboard() {
   return (

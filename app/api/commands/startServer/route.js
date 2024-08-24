@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { exec } from "child_process";
 import util from "util";
+import connectDb from "../../../../lib/db";
+import Player from "../../../../models/player";
 
 const execPromise = util.promisify(exec);
 
 export async function POST() {
   try {
+    await connectDb();
+
     const tmuxSessionName = process.env.TMUX_SESSION_NAME;
 
     // Tmux command to check if a session already exists
@@ -38,6 +42,8 @@ export async function POST() {
       await execPromise(attachSession);
 
       console.log("Server started successfully...");
+
+      await Player.deleteMany({});
 
       return new NextResponse("Server started successfully...", { status: 200 });
     }
