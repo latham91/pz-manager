@@ -27,7 +27,7 @@ export async function GET(req) {
       // Watch for new lines in server-console.txt
       const serverConsole = new Tail(fullPath);
 
-      serverConsole.on("line", (line) => {
+      serverConsole.on("line", async (line) => {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "update", content: line })}\n\n`));
       });
 

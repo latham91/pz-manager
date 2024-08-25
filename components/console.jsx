@@ -14,8 +14,7 @@ export default function Console() {
   // Listen for server console updates
   useEffect(() => {
     const eventSource = new EventSource("/api/console");
-
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = async (event) => {
       const data = JSON.parse(event.data);
 
       if (data.type === "initial") {
@@ -23,10 +22,38 @@ export default function Console() {
       }
 
       if (data.type === "update") {
+        const regexPattern = /steam-id=(\d+).*?username="([^"]+)"/;
+
         setConsoleContent((prevContent) => prevContent + "\n" + data.content);
+
+        // Check for player connections/disconnections
+        if (data.content.includes("ConnectionManager: [fully-connected]")) {
+          const [, steamId, username] = data.content.match(regexPattern);
+
+          // Add player to database
+          await fetch("/api/console/connectionManager", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ steamId, username }),
+          });
+        }
+
+        if (data.content.includes("ConnectionManager: [disconnect]")) {
+          const [, steamId, username] = data.content.match(regexPattern);
+
+          // Remove player from database
+          await fetch("/api/console/connectionManager", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ steamId }),
+          });
+        }
       }
     };
-
     return () => {
       eventSource.close();
     };
