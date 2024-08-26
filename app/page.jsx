@@ -2,6 +2,7 @@ import Container from "../components/container";
 import Console from "../components/console";
 import PlayerList from "../components/player-list";
 import BTSE from "../components/btse";
+import AdminLogs from "../components/admin-logs";
 
 export default function Dashboard() {
   return (
@@ -12,6 +13,7 @@ export default function Dashboard() {
       </div>
       <div className="grid grid-cols-2 gap-5">
         <BTSE />
+        <AdminLogs />
       </div>
     </Container>
   );
