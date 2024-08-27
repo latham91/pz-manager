@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import BTSECard from "./btse-card";
 
-const btseRegex = /^(\d{2}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}\.\d{3})\] \[(\w+)\] (\d+) \[(\w+)\] (.+)$/;
+const btseRegex = /^\[(\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\] \[([^\]]+)\] (\d+) \[([^\]]+)\] (.+)$/;
 
 export default function BTSE() {
   const [btseWarnings, setBtseWarnings] = useState([]);
@@ -30,6 +30,7 @@ export default function BTSE() {
       if (data.type === "update") {
         if (data.content.includes("[BTSE]")) {
           const match = data.content.match(btseRegex);
+          console.log(match);
 
           if (!match) {
             return;
@@ -38,11 +39,10 @@ export default function BTSE() {
           setBtseWarnings((prev) => [
             {
               timestamp: match[1],
-              time: match[2],
-              source: match[3],
-              steamId: match[4],
-              username: match[5],
-              warning: match[6],
+              source: match[2],
+              steamId: match[3],
+              username: match[4],
+              warning: match[5],
             },
             ...prev,
           ]);
@@ -53,7 +53,7 @@ export default function BTSE() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ username: match[5], steamId: match[4], warning: match[6], time: match[2], timestamp: match[1] }),
+            body: JSON.stringify({ timestamp: match[1], source: match[2], steamId: match[3], username: match[4], warning: match[5] }),
           });
         }
       }

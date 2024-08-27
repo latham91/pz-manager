@@ -13,11 +13,11 @@ const BTSESchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  time: {
+  timestamp: {
     type: String,
     required: true,
   },
-  timestamp: {
+  source: {
     type: String,
     required: true,
   },

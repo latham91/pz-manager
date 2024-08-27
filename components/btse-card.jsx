@@ -1,6 +1,9 @@
 import { SkullIcon } from "lucide-react";
+import { convertTimestamp } from "../lib/utils";
 
 export default function BTSECard({ data }) {
+  const timestamp = convertTimestamp(data.timestamp);
+
   return (
     <div className="flex items-center gap-5">
       <div className="h-12 w-12 rounded-md bg-red-500 flex items-center justify-center p-1">
@@ -13,7 +16,7 @@ export default function BTSECard({ data }) {
             {data.username} <span className="text-xs font-normal">(SteamID: {data.steamId})</span>
           </h3>
           <p className="text-xs text-gray-400">
-            {data.timestamp} - {data.time}
+            {new Date(timestamp).toLocaleDateString()} - {new Date(timestamp).toLocaleTimeString()}
           </p>
         </div>
         <p>{data.warning}</p>

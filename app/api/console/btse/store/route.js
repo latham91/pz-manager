@@ -7,9 +7,9 @@ export async function POST(request) {
   await connectDb();
 
   try {
-    const { username, steamId, warning, time, timestamp } = await request.json();
+    const { timestamp, source, steamId, username, warning } = await request.json();
 
-    const player = new BTSE({ username, steamId, warning, time, timestamp });
+    const player = new BTSE({ timestamp, source, steamId, username, warning });
     await player.save();
 
     revalidatePath("/", "layout");
